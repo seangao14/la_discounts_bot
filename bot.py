@@ -23,6 +23,10 @@ async def schedule_message():
     target_time = now.replace(hour=7, minute=0, second=0, microsecond=0)
     if now > target_time and now < target_time + datetime.timedelta(minutes=120):
         message = get_discounts(now)
+        if message == '':
+            message = 'No discounts today :('
+        else:
+            message = "Discounts for today:\n" + message
         
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         for subscriber in subscribers:
