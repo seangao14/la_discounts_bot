@@ -46,8 +46,24 @@ async def subscribe(ctx):
         subscribers.loc[0] = [ctx.author.id]
         subscribers.to_csv('subscribers.csv', index=False)
 
+    print(f"Number of subscribers: {len(subscribers)}")
     await ctx.author.send(f"Subscribed!:\n"
                           f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
+
+@bot.command()
+async def unsubscribe(ctx):
+    print(f"{ctx.author} is trying to unsubscribe")
+    try:
+        subscribers = pd.read_csv('subscribers.csv')['subscribers']
+        if ctx.author.id not in subscribers.values:
+            await ctx.author.send("You are not subscribed!")
+            return
+        subscribers = subscribers[~subscribers.isin([ctx.author.id])]
+        subscribers.to_csv('subscribers.csv', index=False)
+        await ctx.author.send("Unsubscribed!")
+    except FileNotFoundError:
+        return
+    
 
 env = dotenv_values('.env')
 token = env['TOKEN']
