@@ -1,7 +1,7 @@
 import datetime
 import discord
 import pandas as pd
-from config import token
+from dotenv import dotenv_values
 from discord.ext import commands, tasks
 from src.get_discounts import get_discounts
 
@@ -47,5 +47,8 @@ async def subscribe(ctx):
     await ctx.author.send(f"Subscribed!, your id is {ctx.author.id}")
     subscribers.loc[len(subscribers)] = ctx.author.id
     subscribers.to_csv('subscribers.csv', index=False)
+
+env = dotenv_values('.env')
+token = env['TOKEN']
 
 bot.run(token)
