@@ -16,11 +16,11 @@ async def on_ready():
     print(f'We have logged in as {bot.user}')
     daily_message.start()
 
-@tasks.loop(minutes=1)
+@tasks.loop(minutes=5)
 async def daily_message():
     # -7 from UTC to PST
     now = datetime.datetime.now() - datetime.timedelta(hours=7)
-    target_time = now.replace(hour=21, minute=0, second=0, microsecond=0)
+    target_time = now.replace(hour=7, minute=0, second=0, microsecond=0)
     if now > target_time and now < target_time + datetime.timedelta(minutes=120):
         message = get_daily_discounts(now)
         
@@ -46,8 +46,8 @@ async def subscribe(ctx):
         subscribers.loc[0] = [ctx.author.id]
         subscribers.to_csv('subscribers.csv', index=False)
 
-    await ctx.author.send(f"Subscribed! Today's discounts are:\n"
-                            f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
+    await ctx.author.send(f"Subscribed!:\n"
+                          f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
 
 env = dotenv_values('.env')
 token = env['TOKEN']
