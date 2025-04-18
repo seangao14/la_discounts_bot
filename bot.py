@@ -62,6 +62,7 @@ async def unsubscribe(ctx):
         subscribers.to_csv('subscribers.csv', index=False)
         await ctx.author.send("Unsubscribed! You are mean :(")
     except FileNotFoundError:
+        await ctx.author.send("You are not subscribed!")
         return
     
 
