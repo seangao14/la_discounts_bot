@@ -1,7 +1,7 @@
 import pandas as pd
 from src.discounts.baseball import get_mlb_discounts
 
-def get_discounts(today):
+def get_daily_discounts(today):
     """
     Get all discounts for today.
     """

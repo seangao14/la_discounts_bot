@@ -3,7 +3,7 @@ import discord
 import pandas as pd
 from dotenv import dotenv_values
 from discord.ext import commands, tasks
-from src.get_discounts import get_discounts
+from src.get_discounts import get_daily_discounts
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -14,15 +14,15 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 @bot.event
 async def on_ready():
     print(f'We have logged in as {bot.user}')
-    schedule_message.start()
+    daily_message.start()
 
 @tasks.loop(minutes=5)
-async def schedule_message():
+async def daily_message():
     # -7 from UTC to PST
     now = datetime.datetime.now() - datetime.timedelta(hours=7)
     target_time = now.replace(hour=7, minute=0, second=0, microsecond=0)
     if now > target_time and now < target_time + datetime.timedelta(minutes=120):
-        message = get_discounts(now)
+        message = get_daily_discounts(now)
         if message == '':
             message = 'No discounts today :('
         else:
