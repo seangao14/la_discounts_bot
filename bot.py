@@ -47,7 +47,7 @@ async def subscribe(ctx):
         subscribers.to_csv('subscribers.csv', index=False)
 
     print(f"Number of subscribers: {len(subscribers)}")
-    await ctx.author.send(f"Subscribed!\n"
+    await ctx.author.send(f"Subscribed! You are cool :)\n"
                           f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
 
 @bot.command()
@@ -60,7 +60,7 @@ async def unsubscribe(ctx):
             return
         subscribers = subscribers[~subscribers.isin([ctx.author.id])]
         subscribers.to_csv('subscribers.csv', index=False)
-        await ctx.author.send("Unsubscribed!")
+        await ctx.author.send("Unsubscribed! You are mean :(")
     except FileNotFoundError:
         return
     
