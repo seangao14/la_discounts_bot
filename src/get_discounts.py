@@ -2,12 +2,10 @@ import datetime
 import pandas as pd
 from src.discounts.baseball import get_mlb_discounts
 
-def get_discounts():
+def get_discounts(today):
     """
     Get all discounts for today.
     """
-
-    today = datetime.date.today()
 
     baseball_triggered = get_mlb_discounts(today)
     baseball_triggered_df = pd.DataFrame(baseball_triggered, columns=['Team', 'Trigger'])
