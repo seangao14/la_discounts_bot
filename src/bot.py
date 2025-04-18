@@ -31,6 +31,7 @@ async def schedule_message():
 
 @bot.command()
 async def subscribe(ctx):
+    print(f"{ctx.author} is trying to subscribe")
     try:
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         if ctx.author.id in subscribers.values:

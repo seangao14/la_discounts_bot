@@ -1,6 +1,5 @@
 import datetime
 import requests
-import pandas as pd
 
 def get_dodgers_discounts(game, home_away):
     """
