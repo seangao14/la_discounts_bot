@@ -1,6 +1,7 @@
 import datetime
 import requests
 
+# api: https://gitlab.com/dword4/nhlapi/-/blob/master/new-api.md
 data = requests.get('https://api-web.nhle.com/v1/score/now').json()
 
 
