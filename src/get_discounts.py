@@ -1,4 +1,3 @@
-import datetime
 import pandas as pd
 from src.discounts.baseball import get_mlb_discounts
 
@@ -17,7 +16,7 @@ def get_discounts(today):
     )
 
     ret = ''
-    for i, row in today_deals.iterrows():
+    for _, row in today_deals.iterrows():
         ret += (
             f'```\n'
             f'{row["Restaurant"]}\n'

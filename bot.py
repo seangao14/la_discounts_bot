@@ -16,10 +16,11 @@ async def on_ready():
     print(f'We have logged in as {bot.user}')
     schedule_message.start()
 
-@tasks.loop(seconds=10)
+@tasks.loop(minutes=5)
 async def schedule_message():
+    # -7 from UTC to PST
     now = datetime.datetime.now() - datetime.timedelta(hours=7)
-    target_time = now.replace(hour=21, minute=15, second=0, microsecond=0)
+    target_time = now.replace(hour=7, minute=0, second=0, microsecond=0)
     if now > target_time and now < target_time + datetime.timedelta(minutes=120):
         message = get_discounts(now)
         
