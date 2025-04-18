@@ -21,6 +21,7 @@ def get_daily_discounts(today):
             f'```\n'
             f'{row["Restaurant"]}\n'
             f'{row["Deal"]}\n'
+            f'{row["Redemption"]}\n'
             f'Condition: {row["Team"]} {row["Trigger"]}'
             f'```'
         )
