@@ -47,7 +47,7 @@ async def subscribe(ctx):
         subscribers.to_csv('subscribers.csv', index=False)
 
     print(f"Number of subscribers: {len(subscribers)}")
-    await ctx.author.send(f"Subscribed!:\n"
+    await ctx.author.send(f"Subscribed!\n"
                           f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
 
 @bot.command()
