@@ -24,5 +24,10 @@ def get_daily_discounts(today):
             f'Condition: {row["Team"]} {row["Trigger"]}'
             f'```'
         )
+
+    if ret == '':
+        ret = 'No discounts today :('
+    else:
+        ret = "Discounts for today:\n" + ret
         
     return ret
