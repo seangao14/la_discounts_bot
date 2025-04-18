@@ -51,5 +51,4 @@ async def subscribe(ctx):
 env = dotenv_values('.env')
 token = env['TOKEN']
 
-
 bot.run(token)
