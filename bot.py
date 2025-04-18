@@ -21,7 +21,7 @@ async def daily_message():
     # -7 from UTC to PST
     now = datetime.datetime.now() - datetime.timedelta(hours=7)
     target_time = now.replace(hour=7, minute=0, second=0, microsecond=0)
-    if now > target_time and now < target_time + datetime.timedelta(minutes=120):
+    if now > target_time and now < target_time + datetime.timedelta(minutes=5):
         message = get_daily_discounts(now)
         
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
