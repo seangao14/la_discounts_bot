@@ -72,7 +72,7 @@ async def unsubscribe(ctx):
 async def admin_message(ctx, message):
     print(f"{ctx.author} is trying to send a message to all subscribers")
     admin_id = env['ADMIN_ID']
-    if ctx.author.id == admin_id:
+    if str(ctx.author.id) == admin_id:
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         for subscriber in subscribers:
             user = bot.get_user(subscriber)
