@@ -13,7 +13,7 @@ intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
 
-bot = commands.Bot(command_prefix='!', intents=intents)
+bot = commands.Bot(command_prefix='!', intents=intents, help_command=None)
 
 @bot.event
 async def on_ready():
@@ -87,7 +87,7 @@ async def all_deals(ctx):
 
 
 @bot.command()
-async def elp(ctx):
+async def help(ctx):
     print(f"{ctx.author} is trying to get help")
     await ctx.author.send("```\n"
                           "Commands:\n"
