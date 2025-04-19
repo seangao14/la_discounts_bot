@@ -70,8 +70,9 @@ def get_angels_discounts(game, home_away):
 
     if laa_win:
         ret.append(('Angels', 'Any win'))
-    if laa_runs >= 7:
-        ret.append(('Angels', 'Score 7+ runs'))
+    # apparently this deal is not available anymore
+    # if laa_runs >= 7:
+        # ret.append(('Angels', 'Score 7+ runs'))
     if laa_shutout and home_away == 'home':
         ret.append(('Angels', 'Home shutout'))
     if laa_save and home_away == 'home':
