@@ -6,7 +6,7 @@ def table_to_message(df):
             f'{row["Restaurant"]}\n'
             f'{row["Deal"]}\n'
             f'{row["Redemption"]}\n'
-            f'Condition: {row["Team"]} {row["Trigger"]}'
+            f'Condition: {row["Team"]} - {row["Trigger"]}'
             f'```'
         )
     
