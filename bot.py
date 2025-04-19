@@ -75,6 +75,7 @@ async def unsubscribe(ctx):
 
 @bot.command()
 async def all_deals(ctx):
+    print(f"{ctx.author} is trying to get all deals")
     deals = pd.read_csv('deals.csv')
     message = table_to_message(deals)
     if message == '':
@@ -83,18 +84,18 @@ async def all_deals(ctx):
         message = "All possible deals:\n" + message
     
     await ctx.author.send(message)
-    print(f"{ctx.author} is trying to get all deals")
 
 
 @bot.command()
-async def help(ctx):
+async def elp(ctx):
     print(f"{ctx.author} is trying to get help")
     await ctx.author.send("```\n"
                           "Commands:\n"
                           "!subscribe - Subscribe to daily discounts\n"
                           "!unsubscribe - Unsubscribe from daily discounts\n"
                           "!help - Get help\n"
-                          "!all_deals - Get all possible deals (whether they apply today or not)\n")
+                          "!all_deals - Get all possible deals (whether they apply today or not)\n"
+                          "```")
 
 
 @bot.command()
