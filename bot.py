@@ -5,6 +5,9 @@ from dotenv import dotenv_values
 from discord.ext import commands, tasks
 from src.get_discounts import get_daily_discounts
 
+env = dotenv_values('.env')
+token = env['TOKEN']
+
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -64,9 +67,20 @@ async def unsubscribe(ctx):
     except FileNotFoundError:
         await ctx.author.send("You are not subscribed!")
         return
+
+@bot.command()
+async def admin_message(ctx, message):
+    print(f"{ctx.author} is trying to send a message to all subscribers")
+    admin_id = env['ADMIN_ID']
+    if ctx.author.id == admin_id:
+        subscribers = pd.read_csv('subscribers.csv')['subscribers']
+        for subscriber in subscribers:
+            user = bot.get_user(subscriber)
+            await user.send(message)
+        await ctx.author.send("Message sent to all subscribers!")
+    else:
+        await ctx.author.send("You are not authorized to send messages to all subscribers!")
     
 
-env = dotenv_values('.env')
-token = env['TOKEN']
 
 bot.run(token)
