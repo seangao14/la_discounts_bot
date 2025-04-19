@@ -91,8 +91,8 @@ async def help(ctx):
     print(f"{ctx.author} is trying to get help")
     await ctx.author.send("```\n"
                           "Commands:\n"
-                          "!subscribe - Subscribe to discounts notifications\n"
-                          "!unsubscribe - Unsubscribe from discounts notifications\n"
+                          "!subscribe - Subscribe to deals notifications\n"
+                          "!unsubscribe - Unsubscribe from deals notifications\n"
                           "!help - Get help\n"
                           "!all_deals - Get all possible deals (whether they apply today or not)\n"
                           "```")
