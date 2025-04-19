@@ -1,4 +1,5 @@
 import pandas as pd
+from src.helpers import table_to_message
 from src.discounts.baseball import get_mlb_discounts
 
 def get_daily_discounts(today):
@@ -15,16 +16,7 @@ def get_daily_discounts(today):
         baseball_triggered_df, deals, how='inner', on=['Team', 'Trigger']
     )
 
-    ret = ''
-    for _, row in today_deals.iterrows():
-        ret += (
-            f'```\n'
-            f'{row["Restaurant"]}\n'
-            f'{row["Deal"]}\n'
-            f'{row["Redemption"]}\n'
-            f'Condition: {row["Team"]} {row["Trigger"]}'
-            f'```'
-        )
+    ret = table_to_message(today_deals)
 
     if ret == '':
         ret = 'No discounts today :('

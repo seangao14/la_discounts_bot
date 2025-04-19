@@ -4,6 +4,7 @@ import pandas as pd
 from dotenv import dotenv_values
 from discord.ext import commands, tasks
 from src.get_discounts import get_daily_discounts
+from src.helpers import table_to_message
 
 env = dotenv_values('.env')
 token = env['TOKEN']
@@ -19,6 +20,7 @@ async def on_ready():
     print(f'We have logged in as {bot.user}')
     daily_message.start()
 
+
 @tasks.loop(minutes=5)
 async def daily_message():
     # -7 from UTC to PST
@@ -32,6 +34,7 @@ async def daily_message():
             user = bot.get_user(subscriber)
 
             await user.send(message)
+
 
 @bot.command()
 async def subscribe(ctx):
@@ -53,6 +56,7 @@ async def subscribe(ctx):
     await ctx.author.send(f"Subscribed! You are cool :)\n"
                           f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
 
+
 @bot.command()
 async def unsubscribe(ctx):
     print(f"{ctx.author} is trying to unsubscribe")
@@ -68,6 +72,31 @@ async def unsubscribe(ctx):
         await ctx.author.send("You are not subscribed!")
         return
 
+
+@bot.command()
+async def all_deals(ctx):
+    deals = pd.read_csv('deals.csv')
+    message = table_to_message(deals)
+    if message == '':
+        message = 'No deals available :('
+    else:
+        message = "All possible deals:\n" + message
+    
+    await ctx.author.send(message)
+    print(f"{ctx.author} is trying to get all deals")
+
+
+@bot.command()
+async def help(ctx):
+    print(f"{ctx.author} is trying to get help")
+    await ctx.author.send("```\n"
+                          "Commands:\n"
+                          "!subscribe - Subscribe to daily discounts\n"
+                          "!unsubscribe - Unsubscribe from daily discounts\n"
+                          "!help - Get help\n"
+                          "!all_deals - Get all possible deals (whether they apply today or not)\n")
+
+
 @bot.command()
 async def admin_message(ctx, *message):
     print(f"{ctx.author} is trying to send a message to all subscribers")
@@ -80,7 +109,6 @@ async def admin_message(ctx, *message):
         await ctx.author.send("Message sent to all subscribers!")
     else:
         await ctx.author.send("You are not authorized to send messages to all subscribers!")
-    
 
 
 bot.run(token)
