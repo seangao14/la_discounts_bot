@@ -69,14 +69,14 @@ async def unsubscribe(ctx):
         return
 
 @bot.command()
-async def admin_message(ctx, message):
+async def admin_message(ctx, *message):
     print(f"{ctx.author} is trying to send a message to all subscribers")
     admin_id = env['ADMIN_ID']
     if str(ctx.author.id) == admin_id:
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         for subscriber in subscribers:
             user = bot.get_user(subscriber)
-            await user.send(message)
+            await user.send(" ".join(message))
         await ctx.author.send("Message sent to all subscribers!")
     else:
         await ctx.author.send("You are not authorized to send messages to all subscribers!")
