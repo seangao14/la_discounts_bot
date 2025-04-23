@@ -94,6 +94,7 @@ async def help(ctx):
                             'Commands:\n'
                             '!subscribe - Subscribe to deals notifications\n'
                             '!unsubscribe - Unsubscribe from deals notifications\n'
+                            '!github - Get the GitHub link\n'
                             '!help - Get help\n'
                             '!all_deals - Get all possible deals (whether they apply today or not)\n'
                             '```')
