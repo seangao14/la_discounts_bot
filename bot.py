@@ -4,6 +4,7 @@ import pandas as pd
 from dotenv import dotenv_values
 from discord.ext import commands, tasks
 from src.get_discounts import get_daily_discounts
+from src.helpers import send_message
 from src.helpers import table_to_message
 
 env = dotenv_values('.env')
@@ -33,16 +34,16 @@ async def daily_message():
         for subscriber in subscribers:
             user = bot.get_user(subscriber)
 
-            await user.send(message)
+            await send_message(user, message, type='user')
 
 
 @bot.command()
 async def subscribe(ctx):
-    print(f"{ctx.author} is trying to subscribe")
+    print(f'{ctx.author} is trying to subscribe')
     try:
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         if ctx.author.id in subscribers.values:
-            await ctx.author.send("You are already subscribed!")
+            await send_message(ctx, 'You are already subscribed!')
             return
         subscribers.loc[len(subscribers)] = ctx.author.id
         subscribers.to_csv('subscribers.csv', index=False)
@@ -52,64 +53,64 @@ async def subscribe(ctx):
         subscribers.loc[0] = [ctx.author.id]
         subscribers.to_csv('subscribers.csv', index=False)
 
-    print(f"Number of subscribers: {len(subscribers)}")
-    await ctx.author.send(f"Subscribed! You are cool :)\n"
-                          f"{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}")
+    print(f'Number of subscribers: {len(subscribers)}')
+    await send_message(ctx, f'Subscribed! You are cool :)\n'
+                            f'{get_daily_discounts(datetime.datetime.now() - datetime.timedelta(hours=7))}')
 
 
 @bot.command()
 async def unsubscribe(ctx):
-    print(f"{ctx.author} is trying to unsubscribe")
+    print(f'{ctx.author} is trying to unsubscribe')
     try:
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         if ctx.author.id not in subscribers.values:
-            await ctx.author.send("You are not subscribed!")
+            await send_message(ctx, 'You are not subscribed!')
             return
         subscribers = subscribers[~subscribers.isin([ctx.author.id])]
         subscribers.to_csv('subscribers.csv', index=False)
-        await ctx.author.send("Unsubscribed! You are mean :(")
+        await send_message(ctx, 'Unsubscribed! You are mean :(')
     except FileNotFoundError:
-        await ctx.author.send("You are not subscribed!")
+        await send_message(ctx, 'You are not subscribed!')
         return
 
 
 @bot.command()
 async def all_deals(ctx):
-    print(f"{ctx.author} is trying to get all deals")
+    print(f'{ctx.author} is trying to get all deals')
     deals = pd.read_csv('deals.csv')
     message = table_to_message(deals)
     if message == '':
         message = 'No deals available :('
     else:
-        message = "All possible deals:\n" + message
+        message = 'All possible deals:\n' + message
     
-    await ctx.author.send(message)
+    await send_message(ctx, message)
 
 
 @bot.command()
 async def help(ctx):
-    print(f"{ctx.author} is trying to get help")
-    await ctx.author.send("```\n"
-                          "Commands:\n"
-                          "!subscribe - Subscribe to deals notifications\n"
-                          "!unsubscribe - Unsubscribe from deals notifications\n"
-                          "!help - Get help\n"
-                          "!all_deals - Get all possible deals (whether they apply today or not)\n"
-                          "```")
+    print(f'{ctx.author} is trying to get help')
+    await send_message(ctx, '```\n'
+                            'Commands:\n'
+                            '!subscribe - Subscribe to deals notifications\n'
+                            '!unsubscribe - Unsubscribe from deals notifications\n'
+                            '!help - Get help\n'
+                            '!all_deals - Get all possible deals (whether they apply today or not)\n'
+                            '```')
 
 
 @bot.command()
 async def admin_message(ctx, *message):
-    print(f"{ctx.author} is trying to send a message to all subscribers")
+    print(f'{ctx.author} is trying to send a message to all subscribers')
     admin_id = env['ADMIN_ID']
     if str(ctx.author.id) == admin_id:
         subscribers = pd.read_csv('subscribers.csv')['subscribers']
         for subscriber in subscribers:
             user = bot.get_user(subscriber)
-            await user.send(" ".join(message))
-        await ctx.author.send("Message sent to all subscribers!")
+            await send_message(user, ' '.join(message), 'user')
+        await send_message(ctx, 'Message sent to all subscribers!')
     else:
-        await ctx.author.send("You are not authorized to send messages to all subscribers!")
+        await send_message(ctx, 'You are not authorized to send messages to all subscribers!')
 
 
 bot.run(token)
