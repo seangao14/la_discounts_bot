@@ -100,6 +100,13 @@ async def help(ctx):
 
 
 @bot.command()
+async def github(ctx):
+    print(f'{ctx.author} is trying to get the github link')
+    await send_message(ctx, 'Here is the GitHub link:\n'
+                            'https://github.com/seangao14/la_discounts_bot')
+
+
+@bot.command()
 async def admin_message(ctx, *message):
     print(f'{ctx.author} is trying to send a message to all subscribers')
     admin_id = env['ADMIN_ID']
