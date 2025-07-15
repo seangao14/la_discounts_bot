@@ -111,6 +111,9 @@ def get_mlb_discounts(today):
 
     discounts = []
 
+    if games_dicts['dates'] == []:
+        return discounts
+
     for game in games_dicts['dates'][0]['games']:
         teams = {
             game['teams']['away']['team']['name']: 'away',
